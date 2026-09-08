@@ -12,6 +12,27 @@ class ProfilePage(BasePage):
         self.page.locator('input[name="phone"]').fill(phone)
         self.page.locator('input[name="password"]').fill(password)
 
+    def go_to_profile(self):
+        logger.info("Переход в профиль")
+        self.wait_for_element(self.profile_link)
+        self.page.click(self.profile_link)
+        self.page.wait_for_load_state("networkidle")
+
+    def update_name(self, new_name: str):
+        logger.info(f"Обновление имени на: {new_name}")
+        self.wait_for_element(self.name_input)
+        self.page.fill(self.name_input, new_name)
+
+    def update_email(self, new_email: str):
+        logger.info(f"Обновление email на: {new_email}")
+        self.wait_for_element(self.email_input)
+        self.page.fill(self.email_input, new_email)
+
+    def save_profile(self):
+        logger.info("Сохранение профиля")
+        self.page.click(self.save_profile_button)
+        self.page.wait_for_load_state("networkidle")
+
     def submit(self):
         self.page.get_by_role("button", name="Зарегистрироваться").click()
         self.page.wait_for_load_state("networkidle")

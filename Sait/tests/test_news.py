@@ -29,3 +29,37 @@ class TestNewsCreation:
         first_card_title = page.locator(".card-title").first.text_content()
         news_list.click_news(first_card_title)
         assert "/news/" in page.url
+
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_create_news_without_title(self, auth_page, news_page):
+        logger.info("=== Тест создания новости без заголовка ===")
+
+        news_page.navigate_to("https://archiscope.ru/news")
+        news_page.create_news("", "Тестовый текст новости без заголовка")
+
+        with allure.step("Проверка сообщения об ошибке"):
+            error_message = news_page.get_error_message()
+            assert error_message, "Сообщение об ошибке не отображено"
+            assert "заголовок" in error_message.lower() or "title" in error_message.lower(), \
+                "Сообщение об ошибке не содержит информацию о заголовке"
+            logger.info(f"Получено сообщение об ошибке: {error_message}")
+
+        logger.info("=== Тест создания новости без заголовка завершен ===")
+
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_create_news_without_text(self, auth_page, news_page):
+        logger.info("=== Тест создания новости без текста ===")
+
+        news_page.navigate_to("https://archiscope.ru/news")
+        news_page.create_news("Новость без текста", "")
+
+        with allure.step("Проверка сообщения об ошибке"):
+            error_message = news_page.get_error_message()
+            assert error_message, "Сообщение об ошибке не отображено"
+            assert "текст" in error_message.lower() or "text" in error_message.lower(), \
+                "Сообщение об ошибке не содержит информацию о тексте"
+            logger.info(f"Получено сообщение об ошибке: {error_message}")
+
+        logger.info("=== Тест создания новости без текста завершен ===")
+
+        

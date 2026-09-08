@@ -104,3 +104,11 @@ def allure_setup(request):
     allure.dynamic.title(test_name)
     if request.node.obj.__doc__:
         allure.dynamic.description(request.node.obj.__doc__)
+
+@pytest.fixture(scope="function")
+def login_page(page: Page) -> LoginPage:
+    return LoginPage(page)
+
+@pytest.fixture(scope="function")
+def profile_page(page: Page) -> ProfilePage:
+    return ProfilePage(page)
